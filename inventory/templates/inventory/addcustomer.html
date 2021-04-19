@@ -1,0 +1,12 @@
+{%extends 'inventory/base.html'%}
+{%load static%}
+
+{%block content%}
+Customer Creation Page
+<form action="" method="post">
+    {% csrf_token%}
+    {{customerform.as_p}}
+    <input type="submit" value="Add Customer">
+</form>
+
+{%endblock%}

@@ -1,0 +1,117 @@
+
+{% extends 'inventory/base.html' %}
+{%load static %}
+
+{%block content%}
+{%include 'inventory/status.html'%}
+<br>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+	Add Customer
+  </button>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addorder">
+	Add Order
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addorder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<form action="/add_order" method="post">
+			<div class="modal-body">
+
+				{% csrf_token %}
+            <div class="form-group">
+				<strong>Product: </strong> {{orderform.product}}
+			</div>
+            <div class="form-group">
+				<strong>Customer: </strong> {{orderform.customer}}
+			</div>
+			<div class="form-group">
+				<strong>Order Status: </strong> {{orderform.order_status}}
+			</div>
+            <div class="form-group">
+				<strong>Notes: </strong> {{orderform.notes}}
+			</div>
+                
+        
+            {{form.media.js}}
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Add Order</button>
+			  </div>
+
+		</form>
+		
+	  </div>
+	</div>
+  </div>
+<div class="container-fluid">
+
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>CUSTOMERS: <strong>{{customer_count}}</strong></h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'add_customer' %}">Create Customer</a>
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Customer</th>
+					<th>Orders</th>
+				</tr>
+				{%for customer in customers %}
+				<tr>
+					<td>
+						<a href="{% url 'customer' customer.id %}" class="btn btn-sm btn-info">View</a>
+						
+					</td>
+					<td>{{customer.name}}</td>
+					<td>{{customer.order_set.all.count}}</td>
+				</tr>
+				{%endfor%}
+
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<h5>LAST 5 ORDERS</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'add_order'%}">Create Order</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Product</th>
+					<th>Date Orderd</th>
+					<th>Status</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+				{%for order in orders%}
+				<tr>
+
+					<td>{{order.notes}}</td>
+					<td>{{order.date_ordered}}</td>
+					<td>{{order.order_status}}</td>
+				</tr>
+					
+				{%endfor%}
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+</div>
+
+            {%endblock content%}
+           

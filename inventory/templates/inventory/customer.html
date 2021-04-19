@@ -1,0 +1,163 @@
+{%extends 'inventory/base.html'%}
+
+
+{% block content %}
+
+<div class="container-fluid">
+
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Customer: {{customer.name}}</h5>
+			<hr>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="">Update Customer</a>
+			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Customer</a>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Contact Information</h5>
+			<hr>
+			<p><strong>Email: </strong>{{customer.email}}</p>
+			<p><strong>Phone:</strong> {{customer.mobile_no}}</p>
+			<p><strong>Address:</strong> {{customer.address}}</p>
+			<p><strong>Registered:</strong> {{customer.registered_on}}</p>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Total Orders</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{order_count}}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Product</th>
+					<th>Notes</th>
+					<th>Date Orderd</th>
+					<th>Status</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+				{%for order in order%}
+				<tr>	
+					<!-- <td>
+					{%for orderitem in order.product.all%}
+						{{orderitem.title}},
+					{%endfor%}
+
+					</td>
+						
+					<td>
+						{%for orderitem in order.product.all%}
+							{{orderitem.category}}
+						{%endfor%}
+	
+						</td> -->
+						<!-- <td>
+							
+						</td> -->
+					<td>
+					
+							{%for orderitem in order.product.all%}
+								<!-- <tr>
+								<td>{{orderitem.title}}</td>
+								<td>{{orderitem.category.category_name}}</td>
+								</tr> -->
+
+								<div class="card " style="width: 30em;">
+									<div class="row">
+										<div class="col">
+											<img class="card-img-top" src="{{orderitem.image.url}}" alt="Card image cap">
+										</div>
+										<div class="col">
+											
+											  <ul class="list-group list-group-flush">
+												<li class="list-group-item"><strong>
+													{{orderitem.title}}
+												</strong></li>
+												<li class="list-group-item"><strong>Weight :</strong>{{orderitem.weight}}</li>
+												<li class="list-group-item"><strong>Category :</strong>{{orderitem.category.category_name}}</li>
+												<li class="list-group-item"><strong>Price :</strong> Rs {{orderitem.getprice}}</li>
+											
+											  </ul>
+										</div>
+									</div>
+									<!-- <div class="card-body">
+									  <a href="#" class="card-link">Card link</a>
+									  <a href="#" class="card-link">Another link</a>
+									</div> -->
+								  </div>
+							{%endfor%}
+					
+					</td>
+					<td>{{order.notes}}</td>
+					<td>{{order.date_ordered}}</td>
+					{%if order.order_status == "completed" %}
+						<td>
+							<span class="badge badge-success">Completed</span>
+						</td>
+					{%endif%}
+					{%if order.order_status == "processing" %}
+						<td>
+							<span class="badge badge-primary">Processing</span>
+						</td>
+					{%endif%}
+					{%if order.order_status == "pending" %}
+						<td>
+							<span class="badge badge-dark">Pending</span>
+						</td>
+					{%endif%}
+					{%if order.order_status == "canceled" %}
+						<td>
+							<span class="badge badge-danger">Cancelled</span>
+						</td>
+					{%endif%}
+					{%if order.order_status == "onhold" %}
+						<td>
+							<span class="badge badge-warning">OnHold</span>
+						</td>
+					{%endif%}
+					<td><a href="{% url 'update_order' order.id %}">
+						<span class="badge badge-primary">Update</span>
+
+					</a>
+					</td>
+					<td>remove</td>
+					
+				</tr>
+				{%endfor%}
+
+
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+
+{%endblock content %}
